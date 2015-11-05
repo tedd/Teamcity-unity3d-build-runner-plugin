@@ -130,7 +130,7 @@ public class UnityRunnerBuildServiceFactory implements CommandLineBuildServiceFa
                     Loggers.AGENT.info("Latest unity version = " + latestVersion + " at: " + latestVersionPath);
 
                     // add log location (which is oddly the same regardless of version)
-                    String logPath = UnityRunnerConfiguration.getUnityLogPath(platform);
+                    String logPath = UnityRunnerConfiguration.getDefaultUnityLogPath(platform);
                     if (logPath != null) {
                         agentConfiguration.addConfigurationParameter(
                             PluginConstants.CONFIGPARAM_UNITY_LOG_PATH, logPath);

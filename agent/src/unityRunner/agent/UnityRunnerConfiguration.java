@@ -45,6 +45,7 @@ public class UnityRunnerConfiguration {
 
     final Platform platform;
     final java.io.File cleanedLogPath;
+    final String overrideLogPath;
 
     final boolean ignoreLogBefore;
     final String ignoreLogBeforeText;
@@ -101,11 +102,17 @@ public class UnityRunnerConfiguration {
         cleanAfter = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_CLEAN_OUTPUT_AFTER);
         warningsAsErrors = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_WARNINGS_AS_ERRORS);
 
-        // set cleaned log path to %temp%/cleaned-%teamcity.build.id%.log
-        cleanedLogPath = new java.io.File(
+        overrideLogPath = Parameters.getString(runnerParameters, PluginConstants.PROPERTY_LOG_PATH);
+
+        useCleanedLog = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_USE_CLEANED_LOG);
+
+        if(useCleanedLog)
+        {
+            // set cleaned log path to %temp%/cleaned-%teamcity.build.id%.log
+            cleanedLogPath = new java.io.File(
                 agentRunningBuild.getBuildTempDirectory(),
                 String.format("cleaned-%d.log", agentRunningBuild.getBuildId()) );
-        useCleanedLog = true;
+        }
 
         ignoreLogBefore = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_LOG_IGNORE);
         ignoreLogBeforeText = Parameters.getString(runnerParameters, PluginConstants.PROPERTY_LOG_IGNORE_TEXT);
@@ -133,13 +140,17 @@ public class UnityRunnerConfiguration {
     }
 
     String getUnityLogPath() {
-        return getUnityLogPath(platform);
+        if(overrideLogPath != "")
+        {
+            return overrideLogPath;
+        }
+        return getDefaultUnityLogPath(platform);
     }
-    
+
     String getCleanedLogPath() {
         return cleanedLogPath.getPath();
     }
-    
+
     String getInterestedLogPath() {
         if (useCleanedLog) {
             return getCleanedLogPath();
@@ -168,7 +179,7 @@ public class UnityRunnerConfiguration {
      * @param platform platform
      * @return log path or null if not supported
      */
-    static String getUnityLogPath(Platform platform) {
+    static String getDefaultUnityLogPath(Platform platform) {
         switch (platform) {
             case Windows:
                 return windowsLogPath;

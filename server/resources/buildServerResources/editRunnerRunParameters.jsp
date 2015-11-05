@@ -207,6 +207,34 @@
 
 <tr>
     <th>
+        <label for="argument.log_path">Log path: </label>
+    </th>
+    <td>
+        <props:textProperty name="argument.log_path" style="width:32em;"/>
+        <span class="error" id="error_argument.log_path"></span>
+        <span class="smallNote">
+             UnityEditor log path (-logPath).
+        </span>
+    </td>
+</tr>
+
+<tr>
+    <th>
+        <label for="argument.use_cleaned_log">Use cleaned log: </label>
+    </th>
+    <td>
+        <props:checkboxProperty name="argument.use_cleaned_log"/>
+        <span class="error" id="error_argument.use_cleaned_log"></span>
+        <span class="smallNote">
+             Output a cleaned Unity log file to the agent temp directory and tail it.<br/>
+             This omits much Unity cruft.<br/>
+             Corresponds to undocumented Unity command line flag -cleanedLog.<br/>
+        </span>
+    </td>
+</tr>
+
+<tr>
+    <th>
         <label for="argument.log_ignore">Enable Log Ignore: </label>
     </th>
     <td>

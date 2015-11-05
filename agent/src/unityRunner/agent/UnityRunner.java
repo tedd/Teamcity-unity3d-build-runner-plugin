@@ -73,6 +73,11 @@ public class UnityRunner {
             args.add(configuration.getCleanedLogPath());
         }
 
+        if(!configuration.overrideLogPath.equals("")) {
+            args.add("-logPath");
+            args.add(configuration.overrideLogPath);
+        }
+
         args.add(configuration.extraOpts);
 
         return args;

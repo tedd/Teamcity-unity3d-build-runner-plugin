@@ -52,6 +52,14 @@
 </div>
 
 <div class="parameter">
+  Log path: <strong><props:displayValue name="argument.log_path" /></strong>
+</div>
+
+<div class="parameter">
+  Use cleaned log: <strong><props:displayValue name="argument.use_cleaned_log" /></strong>
+</div>
+
+<div class="parameter">
   Build Path: <strong><props:displayValue name="argument.build_path" /></strong>
 </div>
 

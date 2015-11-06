@@ -32,7 +32,9 @@ public class UnityRunnerConfiguration {
     final boolean noGraphics;
     final boolean clearBefore;
     final boolean cleanAfter;
-    final boolean useCleanedLog;
+    final boolean createCleanedLog;
+    final boolean tailCleanedLog;
+    final String cleanedLogPath;
     final boolean warningsAsErrors;
     final String lineListPath;
     final String projectPath;
@@ -44,7 +46,6 @@ public class UnityRunnerConfiguration {
     final String detectedUnityVersionPath;
 
     final Platform platform;
-    final java.io.File cleanedLogPath;
     final String overrideLogPath;
 
     final boolean ignoreLogBefore;
@@ -102,21 +103,15 @@ public class UnityRunnerConfiguration {
         cleanAfter = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_CLEAN_OUTPUT_AFTER);
         warningsAsErrors = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_WARNINGS_AS_ERRORS);
 
-        overrideLogPath = Parameters.getString(runnerParameters, PluginConstants.PROPERTY_LOG_PATH);
+        overrideLogPath = FilenameUtils.separatorsToSystem(Parameters.getString(runnerParameters, PluginConstants.PROPERTY_LOG_PATH));
 
-        useCleanedLog = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_USE_CLEANED_LOG);
-
-        if(useCleanedLog)
-        {
-            // set cleaned log path to %temp%/cleaned-%teamcity.build.id%.log
-            cleanedLogPath = new java.io.File(
-                agentRunningBuild.getBuildTempDirectory(),
-                String.format("cleaned-%d.log", agentRunningBuild.getBuildId()) );
-        }
+        cleanedLogPath = FilenameUtils.separatorsToSystem(Parameters.getString(runnerParameters, PluginConstants.PROPERTY_CLEANED_LOG_PATH));
+        // Only set these if a cleaned log is being generated.
+        createCleanedLog = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_CREATE_CLEANED_LOG) && !cleanedLogPath.equals("");
+        tailCleanedLog = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_TAIL_CLEANED_LOG) && !cleanedLogPath.equals("");
 
         ignoreLogBefore = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_LOG_IGNORE);
         ignoreLogBeforeText = Parameters.getString(runnerParameters, PluginConstants.PROPERTY_LOG_IGNORE_TEXT);
-
     }
 
 
@@ -140,20 +135,19 @@ public class UnityRunnerConfiguration {
     }
 
     String getUnityLogPath() {
-        if(overrideLogPath != "")
-        {
+        if(overrideLogPath != "") {
             return overrideLogPath;
         }
         return getDefaultUnityLogPath(platform);
     }
 
     String getCleanedLogPath() {
-        return cleanedLogPath.getPath();
+        return cleanedLogPath;
     }
 
-    String getInterestedLogPath() {
-        if (useCleanedLog) {
-            return getCleanedLogPath();
+    String getLogPathToTail() {
+        if (createCleanedLog && tailCleanedLog) {
+            return cleanedLogPath;
         } else {
             return getUnityLogPath();
         }

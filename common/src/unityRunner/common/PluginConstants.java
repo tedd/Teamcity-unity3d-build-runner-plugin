@@ -27,7 +27,9 @@ public interface PluginConstants {
     final String PROPERTY_WARNINGS_AS_ERRORS = "argument.warnings_as_errors";
 
     final String PROPERTY_LOG_PATH = "argument.log_path";
-    final String PROPERTY_USE_CLEANED_LOG = "argument.use_cleaned_log";
+    final String PROPERTY_CREATE_CLEANED_LOG = "argument.create_cleaned_log";
+    final String PROPERTY_TAIL_CLEANED_LOG = "argument.tail_cleaned_log";
+    final String PROPERTY_CLEANED_LOG_PATH = "argument.cleaned_log_path";
 
     final String PROPERTY_LOG_IGNORE = "argument.log_ignore";
     final String PROPERTY_LOG_IGNORE_TEXT = "argument.log_ignore_text";

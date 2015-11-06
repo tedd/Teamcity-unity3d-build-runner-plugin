@@ -68,6 +68,7 @@ public class UnityRunnerRunType extends RunType {
         describeParam("Extra options", parameters.get(PluginConstants.PROPERTY_BUILD_EXTRA), sb);
         describeParam("Execute Method", parameters.get(PluginConstants.PROPERTY_EXECUTE_METHOD), sb);
         describeParam("Log path", parameters.get(PluginConstants.PROPERTY_LOG_PATH), sb);
+        describeParam("Cleaned log path", parameters.get(PluginConstants.PROPERTY_CLEANED_LOG_PATH), sb);
 
         String logIgnore = parameters.get(PluginConstants.PROPERTY_LOG_IGNORE);
         if (logIgnore != null && "true".equals(logIgnore)) {
@@ -140,7 +141,8 @@ public class UnityRunnerRunType extends RunType {
         defaults.put(PluginConstants.PROPERTY_CLEAR_OUTPUT_BEFORE, "true");
         defaults.put(PluginConstants.PROPERTY_CLEAN_OUTPUT_AFTER, "true");
         defaults.put(PluginConstants.PROPERTY_WARNINGS_AS_ERRORS, "true");
-        defaults.put(PluginConstants.PROPERTY_USE_CLEANED_LOG, "false");
+        defaults.put(PluginConstants.PROPERTY_CREATE_CLEANED_LOG, "false");
+        defaults.put(PluginConstants.PROPERTY_TAIL_CLEANED_LOG, "false");
         defaults.put(PluginConstants.PROPERTY_LOG_IGNORE, "false");
 
         return defaults;

@@ -220,15 +220,44 @@
 
 <tr>
     <th>
-        <label for="argument.use_cleaned_log">Use cleaned log: </label>
+        <label for="argument.create_cleaned_log">Create cleaned log: </label>
     </th>
     <td>
-        <props:checkboxProperty name="argument.use_cleaned_log"/>
-        <span class="error" id="error_argument.use_cleaned_log"></span>
+        <props:checkboxProperty name="argument.create_cleaned_log"/>
+        <span class="error" id="error_argument.create_cleaned_log"></span>
         <span class="smallNote">
-             Output a cleaned Unity log file to the agent temp directory and tail it.<br/>
+             Output a cleaned Unity log file to the agent temp directory.<br/>
              This omits much Unity cruft.<br/>
              Corresponds to undocumented Unity command line flag -cleanedLog.<br/>
+        </span>
+    </td>
+</tr>
+
+<tr>
+    <th>
+        <label for="argument.tail_cleaned_log">Tail cleaned log: </label>
+    </th>
+    <td>
+        <props:checkboxProperty name="argument.tail_cleaned_log"/>
+        <span class="error" id="error_argument.tail_cleaned_log"></span>
+        <span class="smallNote">
+             Tail the cleaned log instead of the main log.<br/>
+             This only has any effect if Create cleaned log is also set<br/>
+        </span>
+    </td>
+</tr>
+
+<tr>
+    <th>
+        <label for="argument.cleaned_log_path">Cleaned log path: </label>
+    </th>
+    <td>
+        <props:textProperty name="argument.cleaned_log_path" style="width:32em;"/>
+        <span class="error" id="error_argument.cleaned_log_path"></span>
+        <span class="smallNote">
+             Path to generate the cleaned log at.<br/>
+             Passed as argument after -cleanedLog<br/>
+             This only has any effect if Create cleaned log is also set<br/>
         </span>
     </td>
 </tr>

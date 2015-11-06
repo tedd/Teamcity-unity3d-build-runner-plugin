@@ -56,7 +56,15 @@
 </div>
 
 <div class="parameter">
-  Use cleaned log: <strong><props:displayValue name="argument.use_cleaned_log" /></strong>
+  Create cleaned log: <strong><props:displayValue name="argument.create_cleaned_log" /></strong>
+</div>
+
+<div class="parameter">
+  Tail cleaned log: <strong><props:displayValue name="argument.tail_cleaned_log" /></strong>
+</div>
+
+<div class="parameter">
+  Cleaned log path: <strong><props:displayValue name="argument.cleaned_log_path" /></strong>
 </div>
 
 <div class="parameter">

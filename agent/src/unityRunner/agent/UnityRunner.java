@@ -74,7 +74,7 @@ public class UnityRunner {
         }
 
         if(!configuration.overrideLogPath.equals("")) {
-            args.add("-logPath");
+            args.add("-logFile");
             args.add(configuration.overrideLogPath);
         }
 

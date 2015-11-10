@@ -33,6 +33,7 @@ public class UnityRunnerRunType extends RunType {
     }
 
     @Override
+    @NotNull
     public String getDescription() {
         return PluginConstants.RUNNER_DESCRIPTION;
     }

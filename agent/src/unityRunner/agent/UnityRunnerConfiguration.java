@@ -72,12 +72,12 @@ public class UnityRunnerConfiguration {
         quit = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_QUIT);
         batchMode = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_BATCH_MODE);
         noGraphics = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_NO_GRAPHICS);
-        projectPath = FilenameUtils.separatorsToSystem(
-                Parameters.getString(runnerParameters, PluginConstants.PROPERTY_PROJECT_PATH));
+        projectPath = FilenameUtils.normalize(FilenameUtils.separatorsToSystem(
+                Parameters.getString(runnerParameters, PluginConstants.PROPERTY_PROJECT_PATH)));
 
         // executable path CAN be overridden
-        unityExecutablePath = FilenameUtils.separatorsToSystem(
-                Parameters.getString(runnerParameters, PluginConstants.PROPERTY_UNITY_EXECUTABLE_PATH));
+        unityExecutablePath = FilenameUtils.normalize(FilenameUtils.separatorsToSystem(
+                Parameters.getString(runnerParameters, PluginConstants.PROPERTY_UNITY_EXECUTABLE_PATH)));
 
         unityVersion = Parameters.getString(runnerParameters, PluginConstants.PROPERTY_UNITY_VERSION);
         if (isSet(unityVersion)) {
@@ -92,20 +92,20 @@ public class UnityRunnerConfiguration {
                     PluginConstants.CONFIGPARAM_UNITY_LATEST_VERSION);
         }
 
-        lineListPath = FilenameUtils.separatorsToSystem(Parameters.getString(runnerParameters, PluginConstants.PROPERTY_LINELIST_PATH));
+        lineListPath = FilenameUtils.normalize(FilenameUtils.separatorsToSystem(Parameters.getString(runnerParameters, PluginConstants.PROPERTY_LINELIST_PATH)));
         executeMethod = Parameters.getString(runnerParameters, PluginConstants.PROPERTY_EXECUTE_METHOD);
         buildPlayer = Parameters.getString(runnerParameters, PluginConstants.PROPERTY_BUILD_PLAYER);
-        buildPath = FilenameUtils.separatorsToSystem(
-                Parameters.getString(runnerParameters, PluginConstants.PROPERTY_BUILD_PATH));
+        buildPath = FilenameUtils.normalize(FilenameUtils.separatorsToSystem(
+                Parameters.getString(runnerParameters, PluginConstants.PROPERTY_BUILD_PATH)));
         extraOpts = Parameters.getString(runnerParameters, PluginConstants.PROPERTY_BUILD_EXTRA);
 
         clearBefore = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_CLEAR_OUTPUT_BEFORE);
         cleanAfter = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_CLEAN_OUTPUT_AFTER);
         warningsAsErrors = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_WARNINGS_AS_ERRORS);
 
-        overrideLogPath = FilenameUtils.separatorsToSystem(Parameters.getString(runnerParameters, PluginConstants.PROPERTY_LOG_PATH));
+        overrideLogPath = FilenameUtils.normalize(FilenameUtils.separatorsToSystem(Parameters.getString(runnerParameters, PluginConstants.PROPERTY_LOG_PATH)));
 
-        cleanedLogPath = FilenameUtils.separatorsToSystem(Parameters.getString(runnerParameters, PluginConstants.PROPERTY_CLEANED_LOG_PATH));
+        cleanedLogPath = FilenameUtils.normalize(FilenameUtils.separatorsToSystem(Parameters.getString(runnerParameters, PluginConstants.PROPERTY_CLEANED_LOG_PATH)));
         // Only set these if a cleaned log is being generated.
         createCleanedLog = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_CREATE_CLEANED_LOG) && !cleanedLogPath.equals("");
         tailCleanedLog = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_TAIL_CLEANED_LOG) && !cleanedLogPath.equals("");

@@ -61,7 +61,9 @@ public class OutputDirectoryCleaner extends DirectoryWalker {
         if (file.getName().endsWith(".meta")) {
             logger.log("Removing file: " + file.getPath());
             if (file.exists()) {
-                file.delete();
+                if (!file.delete()) {
+                    logger.log("Failed to delete file: " + file.getPath());
+                }
             }
             results.add(file);
         }

@@ -120,7 +120,6 @@ public class LogParser {
 
         switch (type) {
             case Warning:
-                status = Status.WARNING;
                 if(warningsAsErrors) {
                     status = Status.ERROR;
                 }

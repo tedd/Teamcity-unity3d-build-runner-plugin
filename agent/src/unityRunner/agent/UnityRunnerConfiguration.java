@@ -135,7 +135,7 @@ public class UnityRunnerConfiguration {
     }
 
     String getUnityLogPath() {
-        if(overrideLogPath != "") {
+        if(!overrideLogPath.equals("")) {
             return overrideLogPath;
         }
         return getDefaultUnityLogPath(platform);

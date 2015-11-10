@@ -104,6 +104,8 @@ public class UnityRunner {
         if (configuration.clearBefore) {
             clearBefore();
         }
+
+        ensureOutputDirectoryExists();
     }
 
     /**
@@ -246,25 +248,27 @@ public class UnityRunner {
      */
     private void clearBefore() {
         File outputDir = new File(configuration.buildPath);
+        logMessage("Removing output path: " + outputDir.getPath());
 
-        try {
-            if (outputDir.exists()) {
-                logMessage("Removing output directory: " + outputDir.getPath());
-                if (outputDir.isDirectory()) {
-                    // only delete directory if it is a directory!
-                    FileUtils.deleteDirectory(outputDir);
-                } else if (outputDir.isFile()) {
-                    outputDir.delete();
-                }
-            }
-
-            logMessage("Creating output directory: " + outputDir.getPath());
-            FileUtils.forceMkdir(outputDir);
-
-        } catch (IOException e) {
-            logParser.logException(e);
+        if (!outputDir.exists()) {
+            logMessage("Output path doesn't exist; not deleting");
+            return;
         }
 
+        if (outputDir.isDirectory()) {
+            logMessage("Output path is a directory");
+            // only delete directory if it is a directory!
+            try {
+                FileUtils.deleteDirectory(outputDir);
+            } catch(IOException e) {
+                logParser.logException(e);
+            }
+        } else if (outputDir.isFile()) {
+            logMessage("Output path is a file");
+            if(!outputDir.delete()) {
+                logParser.log("Failed to delete file: " + outputDir.getPath());
+            }
+        }
     }
 
     /**
@@ -274,6 +278,16 @@ public class UnityRunner {
         new OutputDirectoryCleaner(logParser).clean(new File(configuration.buildPath));
     }
 
+    private void ensureOutputDirectoryExists() {
+        File buildPath = new File(configuration.buildPath);
+        File parent = buildPath.getParentFile();
+        logMessage("Creating parent directory (" + parent.getPath() + ") for output path (" + buildPath.getPath() + ")");
+        try {
+            FileUtils.forceMkdir(parent);
+            logMessage("Successfully created parent directory");
+        } catch (IOException e) {
+            logMessage("Failed to create parent directory");
+            logParser.logException(e);
+        }
+    }
 }
-
-

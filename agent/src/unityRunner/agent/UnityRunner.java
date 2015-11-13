@@ -247,11 +247,16 @@ public class UnityRunner {
      * clear the output directory before running
      */
     private void clearBefore() {
+        if(configuration.buildPath.equals("")) {
+            logMessage("Output path is not set, or set to an empty string; not going to try deleting it.");
+            return;
+        }
+
         File outputDir = new File(configuration.buildPath);
         logMessage("Removing output path: " + outputDir.getPath());
 
         if (!outputDir.exists()) {
-            logMessage("Output path doesn't exist; not deleting");
+            logMessage("Output path doesn't exist; not going to try deleting it.");
             return;
         }
 
@@ -279,8 +284,19 @@ public class UnityRunner {
     }
 
     private void ensureOutputDirectoryExists() {
+        if(configuration.buildPath.equals("")) {
+            logMessage("Output build path is not set, or set to an empty string; not creating parent directory.");
+            return;
+        }
+
         File buildPath = new File(configuration.buildPath);
         File parent = buildPath.getParentFile();
+
+        if(parent == null) {
+            logMessage("Build output path doesn't have a parent; not creating parent directory.");
+            return;
+        }
+
         logMessage("Creating parent directory (" + parent.getPath() + ") for output path (" + buildPath.getPath() + ")");
         try {
             FileUtils.forceMkdir(parent);

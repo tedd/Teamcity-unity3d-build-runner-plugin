@@ -10,7 +10,7 @@
         <label for="argument.unity_version">Unity Version: </label>
     </th>
     <td>
-        <props:textProperty name="argument.unity_version" style="width:32em;"/>
+        <props:textProperty name="argument.unity_version" className="longField"/>
         <span class="error" id="error_argument.unity_version"></span>
         <span class="smallNote">
              Specify a version of Unity to use - e.g. 5.1.2f1. If left blank the latest version installed will be used.
@@ -24,7 +24,7 @@
         <label for="unity.executable">Unity Executable: </label>
     </th>
     <td>
-        <props:textProperty name="unity.executable" style="width:32em;"/>
+        <props:textProperty name="unity.executable" className="longField"/>
         <span class="error" id="error_unity.executable"></span>
         <span class="smallNote">
              Optional, specify to use override the Unity executable path (if specifying a version of unity its best to leave blank).
@@ -37,7 +37,7 @@
         <label for="teamcity.build.workingDir">Working Directory: </label>
     </th>
     <td>
-        <props:textProperty name="teamcity.build.workingDir" style="width:32em;"/>
+        <props:textProperty name="teamcity.build.workingDir" className="longField"/>
         <span class="error" id="error_teamcity.build.workingDir"></span>
         <span class="smallNote">
              Optional, specify if differs from the checkout directory.
@@ -77,7 +77,7 @@
         <label for="argument.project_path">Project path: </label>
     </th>
     <td>
-        <props:textProperty name="argument.project_path" style="width:32em;"/>
+        <props:textProperty name="argument.project_path" className="longField"/>
         <span class="error" id="error_argument.project_path"></span>
         <span class="smallNote">
              Open the project at the given path.
@@ -90,7 +90,7 @@
         <label for="argument.line_list_path">Line List path: </label>
     </th>
     <td>
-        <props:textProperty name="argument.line_list_path" style="width:32em;"/>
+        <props:textProperty name="argument.line_list_path" className="longField"/>
         <span class="error" id="error_argument.line_list_path"></span>
         <span class="smallNote">
              Open the Error / Warning list file at the following path
@@ -103,7 +103,8 @@
         <label for="argument.build_player">Build Player: </label>
     </th>
     <td>
-        <props:textProperty name="argument.build_player" style="width:32em;"/>
+        <props:textProperty name="argument.build_player" className="longField"/>
+        <span class="error" id="error_argument.build_player"></span>
         <span class="smallNote">
              Build player command line (e.g buildWindowsPlayer, buildWindows64Player).
         </span>
@@ -127,7 +128,7 @@
         <label for="argument.build_path">Build path: </label>
     </th>
     <td>
-        <props:textProperty name="argument.build_path" style="width:32em;"/>
+        <props:textProperty name="argument.build_path" className="longField"/>
         <span class="error" id="error_argument.build_path"></span>
         <span class="smallNote">
              Build output path.
@@ -198,7 +199,7 @@
         <label for="argument.execute_method">Execute method: </label>
     </th>
     <td>
-        <props:textProperty name="argument.execute_method" style="width:32em;"/>
+        <props:textProperty name="argument.execute_method" className="longField"/>
         <span class="error" id="error_argument.execute_method"></span>
         <span class="smallNote">
              Execute the static method as soon as Unity is started and the project folder has been opened.
@@ -224,7 +225,7 @@
         <label for="argument.log_path">Log path: </label>
     </th>
     <td>
-        <props:textProperty name="argument.log_path" style="width:32em;"/>
+        <props:textProperty name="argument.log_path" className="longField"/>
         <span class="error" id="error_argument.log_path"></span>
         <span class="smallNote">
              UnityEditor log path (-logPath).
@@ -266,7 +267,7 @@
         <label for="argument.cleaned_log_path">Cleaned log path: </label>
     </th>
     <td>
-        <props:textProperty name="argument.cleaned_log_path" style="width:32em;"/>
+        <props:textProperty name="argument.cleaned_log_path" className="longField"/>
         <span class="error" id="error_argument.cleaned_log_path"></span>
         <span class="smallNote">
              Path to generate the cleaned log at.<br/>
@@ -295,7 +296,7 @@
 
         <div id="argument.log_ignore_text.container" style="${propertiesBean.properties['argument.log_ignore'] ? '' : 'display:none;'}"
             <label for="argument.log_ignore_text">Ignore any log line before: </label>
-            <props:textProperty name="argument.log_ignore_text" style="width:32em;"/>
+            <props:textProperty name="argument.log_ignore_text" className="longField"/>
             <span class="error" id="error_argument.log_ignore_text"></span>
         </div>
 

@@ -26,10 +26,12 @@ public class LogParser {
     private final Stack<MatchedBlock> blockStack = new Stack<MatchedBlock>();
     private final jetbrains.buildServer.agent.BuildProgressLogger logger;
     private final boolean warningsAsErrors;
+    private final boolean errorsAsWarnings;
 
-    LogParser(jetbrains.buildServer.agent.BuildProgressLogger logger, boolean warningsAsErrors, java.io.File lineListDefinition) {
+    LogParser(jetbrains.buildServer.agent.BuildProgressLogger logger, boolean warningsAsErrors, boolean errorsAsWarnings, java.io.File lineListDefinition) {
         this.logger = logger;
         this.warningsAsErrors = warningsAsErrors;
+        this.errorsAsWarnings = errorsAsWarnings;
 
         UnityLineListParser.ParseLines(lineListDefinition);
 
@@ -128,7 +130,12 @@ public class LogParser {
                 }
                 break;
             case Error:
-                status = Status.ERROR;
+                if(errorsAsWarnings) {
+                    status = Status.WARNING;
+                }
+                else {
+                    status = Status.ERROR;
+                }
                 break;
             case Failure:
                 status = Status.FAILURE;

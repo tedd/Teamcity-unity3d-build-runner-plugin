@@ -36,6 +36,7 @@ public class UnityRunnerConfiguration {
     final boolean tailCleanedLog;
     final String cleanedLogPath;
     final boolean warningsAsErrors;
+    final boolean errorsAsWarnings;
     final String lineListPath;
     final String projectPath;
     final String executeMethod;
@@ -102,6 +103,7 @@ public class UnityRunnerConfiguration {
         clearBefore = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_CLEAR_OUTPUT_BEFORE);
         cleanAfter = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_CLEAN_OUTPUT_AFTER);
         warningsAsErrors = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_WARNINGS_AS_ERRORS);
+        errorsAsWarnings = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_ERRORS_AS_WARNINGS);
 
         overrideLogPath = FilenameUtils.normalize(FilenameUtils.separatorsToSystem(Parameters.getString(runnerParameters, PluginConstants.PROPERTY_LOG_PATH)));
 

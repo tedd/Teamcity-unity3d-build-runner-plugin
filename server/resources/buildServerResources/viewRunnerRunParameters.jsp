@@ -52,6 +52,10 @@
 </div>
 
 <div class="parameter">
+  Errors As Warnings: <strong><props:displayValue name="argument.errors_as_warnings" /></strong>
+</div>
+
+<div class="parameter">
   Log path: <strong><props:displayValue name="argument.log_path" /></strong>
 </div>
 

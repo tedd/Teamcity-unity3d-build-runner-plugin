@@ -142,6 +142,7 @@ public class UnityRunnerRunType extends RunType {
         defaults.put(PluginConstants.PROPERTY_CLEAR_OUTPUT_BEFORE, "true");
         defaults.put(PluginConstants.PROPERTY_CLEAN_OUTPUT_AFTER, "true");
         defaults.put(PluginConstants.PROPERTY_WARNINGS_AS_ERRORS, "true");
+        defaults.put(PluginConstants.PROPERTY_ERRORS_AS_WARNINGS, "false");
         defaults.put(PluginConstants.PROPERTY_CREATE_CLEANED_LOG, "false");
         defaults.put(PluginConstants.PROPERTY_TAIL_CLEANED_LOG, "false");
         defaults.put(PluginConstants.PROPERTY_LOG_IGNORE, "false");

@@ -181,6 +181,20 @@
 
 <tr>
     <th>
+        <label for="argument.errors_as_warnings">Errors As Warnings: </label>
+    </th>
+    <td>
+         <props:checkboxProperty name="argument.errors_as_warnings"/>
+         <span class="error" id="error_argument.errors_as_warnings"></span>
+         <span class="smallNote">
+            Should the build will report errors as warnings.<br/>
+            This sounds insane, but is useful if you need to run Unity twice (ignoring the first set of errors) to work around Unity batch mode bugs
+         </span>
+    </td>
+</tr>
+
+<tr>
+    <th>
         <label for="argument.execute_method">Execute method: </label>
     </th>
     <td>

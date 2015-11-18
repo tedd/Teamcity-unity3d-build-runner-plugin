@@ -76,7 +76,7 @@
 </div>
 
 <div class="parameter">
-  Build Extra: <strong><props:displayValue name="argument.build_extra" /></strong>
+  Extra args: <strong><props:displayValue name="argument.build_extra" /></strong>
 </div>
 
 <div class="parameter">

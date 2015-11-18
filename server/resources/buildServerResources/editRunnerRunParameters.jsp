@@ -113,12 +113,13 @@
 
 <tr>
     <th>
-        <label for="argument.build_extra">Build extra: </label>
+        <label for="argument.build_extra">Extra args: </label>
     </th>
     <td>
-        <props:textProperty name="argument.build_extra" style="width:32em;"/>
+        <props:multilineProperty name="argument.build_extra" linkTitle="Edit extra args" rows="5" cols="50"/>
+        <span class="error" id="error_argument.build_extra"></span>
         <span class="smallNote">
-             Add extra command line options.
+             Add extra raw command line options. Put each extra argument on its own line.
         </span>
     </td>
 <tr>

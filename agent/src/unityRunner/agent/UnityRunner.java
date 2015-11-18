@@ -80,7 +80,10 @@ public class UnityRunner {
             args.add(configuration.overrideLogPath);
         }
 
-        args.add(configuration.extraOpts);
+        for(int i = 0; i < configuration.extraOpts.length; ++i)
+        {
+            args.add(configuration.extraOpts[i]);
+        }
 
         return args;
     }

@@ -51,7 +51,7 @@ public class UnityRunnerConfiguration {
 
     final public static String MacPlistRelativePath = "Unity.app/Contents/Info.plist";
     final public static String MacUnityExecutableRelativePath = "Unity.app/Contents/MacOS/Unity";
-    final public static String WindowsUnityExecutableRelativePath = "Editor\\unity.exe";
+    final public static String WindowsUnityExecutableRelativePath = "Editor\\Unity.exe";
 
     final static String windowsLogPath = System.getenv("LOCALAPPDATA") + "\\Unity\\Editor\\Editor.log";
     final static String macLogPath = System.getProperty("user.home") + "/Library/Logs/Unity/Editor.log";
@@ -203,8 +203,12 @@ public class UnityRunnerConfiguration {
             case Windows:
                 // on Windows we have potentially two locations for 32 and 64 bit apps
                 addLocation(System.getenv("ProgramFiles"), locations);
-                addLocation(System.getenv("%programfiles% (x86)"), locations);
+                addLocation(System.getenv("ProgramFiles(x86)"), locations);
 
+                // When running a 32 bit instance of a JVM under a 64 bit version of windows, from
+                // windows 10. We should also use the following environment variable, the previous two
+                // will all resolve to the same location. Either losing Program Files or Program Files (x86)
+                addLocation(System.getenv("ProgramW6432"), locations);
             case Mac:
                 // on Mac there is only one location for apps.
                 addLocation("/Applications", locations);

@@ -96,6 +96,7 @@ public class UnityRunnerBuildServiceFactory implements CommandLineBuildServiceFa
                 Map<String,String> foundUnityVersions = new HashMap<String,String>();
 
                 for(String location : UnityRunnerConfiguration.getPossibleUnityLocations(platform)) {
+                    Loggers.AGENT.info("Looking for Unity Installations at : " + location);
                     //  search for <location>/Unity * folders
                     findUnityVersionsIn(location, platform, foundUnityVersions);
                 }

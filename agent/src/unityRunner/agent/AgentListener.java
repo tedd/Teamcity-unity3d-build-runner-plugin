@@ -15,6 +15,6 @@ public class AgentListener extends AgentLifeCycleAdapter {
 
     @Override
     public void agentInitialized(@NotNull final BuildAgent agent) {
-        Loggers.AGENT.info("Plugin '" + PluginConstants.RUN_TYPE + " is running.");
+        Loggers.AGENT.info("Plugin '" + PluginConstants.RUN_TYPE + "' is running.");
     }
 }

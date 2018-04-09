@@ -111,6 +111,31 @@
     <props:selectSectionPropertyContent value="buildWebPlayer" caption="Web Player" />
 </props:selectSectionProperty>
 
+<props:selectSectionProperty name="argument.build_target" title="Build target:">
+    <props:selectSectionPropertyContent value="" caption="<Don't Specify>"/>
+    <props:selectSectionPropertyContent value="standalone" caption="Standalone"/>
+    <props:selectSectionPropertyContent value="Win" caption="Windows (32-bit)"/>
+    <props:selectSectionPropertyContent value="Win64" caption="Windows (64-bit)"/>
+    <props:selectSectionPropertyContent value="OSXUniversal" caption="OSX (Universal)"/>
+    <props:selectSectionPropertyContent value="Linux" caption="Linux (32-bit)"/>
+    <props:selectSectionPropertyContent value="Linux64" caption="Linux (64-bit)"/>
+    <props:selectSectionPropertyContent value="LinuxUniversal" caption="Linux (Universal)"/>
+    <props:selectSectionPropertyContent value="iOS" caption="iOS"/>
+    <props:selectSectionPropertyContent value="Android" caption="Android" />
+    <props:selectSectionPropertyContent value="Web" caption="Web" />
+    <props:selectSectionPropertyContent value="WebStreamed" caption="Web Streamed" />
+    <props:selectSectionPropertyContent value="WebGL" caption="WebGL" />
+    <props:selectSectionPropertyContent value="XboxOne" caption="Xbox One" />
+    <props:selectSectionPropertyContent value="PS4" caption="Playstation 4" />
+    <props:selectSectionPropertyContent value="PSP2" caption="PS Vita" />
+    <props:selectSectionPropertyContent value="WindowsStoreApps" caption="Windows Store" />
+    <props:selectSectionPropertyContent value="Switch" caption="Switch" />
+    <props:selectSectionPropertyContent value="WiiU" caption="WiiU" />
+    <props:selectSectionPropertyContent value="N3DS" caption="Nintendo 3DS" />
+    <props:selectSectionPropertyContent value="tvOS" caption="tvOS" />
+    <props:selectSectionPropertyContent value="PSM" caption="Playstation Mobile" />
+</props:selectSectionProperty>
+
 <tr>
     <th>
         <label for="argument.build_extra">Build extra: </label>

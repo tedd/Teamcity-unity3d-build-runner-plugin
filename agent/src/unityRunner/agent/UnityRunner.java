@@ -20,6 +20,9 @@ public class UnityRunner {
     final UnityRunnerConfiguration configuration;
     private volatile boolean stop = false;
     private final LogParser logParser;
+    private Thread runnerThread;
+    private Tailer tailer;
+    private TailerListener listener;
 
     UnityRunner(UnityRunnerConfiguration configuration, LogParser logParser) {
         this.configuration = configuration;
@@ -69,6 +72,11 @@ public class UnityRunner {
             args.add(configuration.executeMethod);
         }
 
+        if(!configuration.buildTarget.equals("")) {
+            args.add("-buildTarget");
+            args.add(configuration.buildTarget);
+        }
+
         if (configuration.useCleanedLog) {
             args.add("-cleanedLogFile");
             args.add(configuration.getCleanedLogPath());
@@ -84,21 +92,13 @@ public class UnityRunner {
      * start the unity runner
      */
     public void start() {
-//
-//        logMessage("[Starting UnityRunner]");
-//
-//        Thread runnerThread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                tailLogFile();
-//            }
-//        });
-//        runnerThread.start();
-        logMessage("[Unity runner is started, but waiting until end to cat log file]");
+        logMessage("[Starting UnityRunner]");
 
         if (configuration.clearBefore) {
             clearBefore();
         }
+
+        tailLogFile();
     }
 
     /**
@@ -109,21 +109,11 @@ public class UnityRunner {
         logMessage("[tailing log file: " + configuration.getInterestedLogPath() + "]");
 
         File file = new File(configuration.getInterestedLogPath());
-        TailerListener listener = new TailerListener(this);
-        Tailer tailer = Tailer.create(file, listener);
+        listener = new TailerListener(this);
+        tailer = new Tailer(file, listener, 500);
 
-        while (!stop) {
-            // sleep so we don't busy-wait
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        tailer.stop();
-        logMessage("[log tail process end]");
-
+        runnerThread = new Thread(tailer);
+        runnerThread.start();
     }
 
     /**
@@ -131,11 +121,15 @@ public class UnityRunner {
      */
     private void catLogFile() {
         logMessage("[Catting log file]");
-        if ( configuration.ignoreLogBefore) {
+        if (configuration.ignoreLogBefore) {
             logMessage("[Ignoring lines before text "+configuration.ignoreLogBeforeText +"]");
         }
 
-        File file = new File(configuration.getInterestedLogPath());
+        String interestedLogPath = configuration.getInterestedLogPath();
+
+        logMessage("[InterestedLogPath] " + interestedLogPath);
+
+        File file = new File(interestedLogPath);
 
         // for each line
         try {
@@ -186,9 +180,13 @@ public class UnityRunner {
      * stop the runner
      */
     public void stop() {
-        catLogFile();
-//        stop = true;
-//        logMessage("[Stop UnityRunner]");
+//        catLogFile();
+
+        tailer.stop();
+
+        logMessage("[log tail process end]");
+
+        logMessage("[Stop UnityRunner]");
 
     }
 

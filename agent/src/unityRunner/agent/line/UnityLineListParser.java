@@ -43,6 +43,7 @@ public class UnityLineListParser {
                     new Line(".*?error CS\\d+.*?", Line.Type.Error),
                     new Line("Compilation failed:.*", Line.Type.Error),
                     new Line("Scripts have compiler errors\\..*", Line.Type.Error));
+                    new Line("Error building player because script class layout is incompatible between the editor and the player.", Line.Type.Error);
 
             return;
         }

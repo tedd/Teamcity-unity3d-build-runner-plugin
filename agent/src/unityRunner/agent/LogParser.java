@@ -26,10 +26,12 @@ public class LogParser {
     private final Stack<MatchedBlock> blockStack = new Stack<MatchedBlock>();
     private final jetbrains.buildServer.agent.BuildProgressLogger logger;
     private final boolean warningsAsErrors;
+    private int errorCount;
 
     LogParser(jetbrains.buildServer.agent.BuildProgressLogger logger, boolean warningsAsErrors, java.io.File lineListDefinition) {
         this.logger = logger;
         this.warningsAsErrors = warningsAsErrors;
+        this.errorCount = 0;
 
         UnityLineListParser.ParseLines(lineListDefinition);
 
@@ -123,6 +125,7 @@ public class LogParser {
                 status = Status.WARNING;
                 if(warningsAsErrors) {
                     status = Status.ERROR;
+                    errorCount++;
                 }
                 else {
                     status = Status.WARNING;
@@ -130,6 +133,7 @@ public class LogParser {
                 break;
             case Error:
                 status = Status.ERROR;
+                errorCount++;
                 break;
             case Failure:
                 status = Status.FAILURE;
@@ -143,6 +147,7 @@ public class LogParser {
     }
 
     public void logException(Exception e) {
+        errorCount++;
         final Writer stackTrace = new StringWriter();
         e.printStackTrace(new PrintWriter(stackTrace));
 
@@ -152,5 +157,11 @@ public class LogParser {
     private Timestamp getTimestamp() {
         java.util.Date date = new java.util.Date();
         return new Timestamp(date.getTime());
+    }
+
+    public void logCompilationFailure() {
+        if(errorCount > 0) {
+            logger.buildFailureDescription(errorCount + " compilation errors");
+        }
     }
 }

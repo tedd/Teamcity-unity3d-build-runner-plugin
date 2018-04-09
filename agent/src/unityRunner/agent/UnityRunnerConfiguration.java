@@ -38,6 +38,7 @@ public class UnityRunnerConfiguration {
     final String projectPath;
     final String executeMethod;
     final String buildPlayer;
+    final String buildTarget;
     final String buildPath;
     final String extraOpts;
     final String unityVersion;
@@ -70,8 +71,7 @@ public class UnityRunnerConfiguration {
         quit = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_QUIT);
         batchMode = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_BATCH_MODE);
         noGraphics = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_NO_GRAPHICS);
-        projectPath = FilenameUtils.separatorsToSystem(
-                Parameters.getString(runnerParameters, PluginConstants.PROPERTY_PROJECT_PATH));
+        projectPath = FilenameUtils.separatorsToSystem(Parameters.getString(runnerParameters, PluginConstants.PROPERTY_PROJECT_PATH));
 
         // executable path CAN be overridden
         unityExecutablePath = FilenameUtils.separatorsToSystem(
@@ -93,6 +93,7 @@ public class UnityRunnerConfiguration {
         lineListPath = FilenameUtils.separatorsToSystem(Parameters.getString(runnerParameters, PluginConstants.PROPERTY_LINELIST_PATH));
         executeMethod = Parameters.getString(runnerParameters, PluginConstants.PROPERTY_EXECUTE_METHOD);
         buildPlayer = Parameters.getString(runnerParameters, PluginConstants.PROPERTY_BUILD_PLAYER);
+        buildTarget = Parameters.getString(runnerParameters, PluginConstants.PROPERTY_BUILD_TARGET);
         buildPath = FilenameUtils.separatorsToSystem(
                 Parameters.getString(runnerParameters, PluginConstants.PROPERTY_BUILD_PATH));
         extraOpts = Parameters.getString(runnerParameters, PluginConstants.PROPERTY_BUILD_EXTRA);
@@ -105,6 +106,7 @@ public class UnityRunnerConfiguration {
         cleanedLogPath = new java.io.File(
                 agentRunningBuild.getBuildTempDirectory(),
                 String.format("cleaned-%d.log", agentRunningBuild.getBuildId()) );
+
         useCleanedLog = true;
 
         ignoreLogBefore = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_LOG_IGNORE);

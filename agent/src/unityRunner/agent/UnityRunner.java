@@ -1,6 +1,7 @@
 package unityRunner.agent;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.LineIterator;
 import org.apache.commons.io.input.Tailer;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,6 +20,9 @@ public class UnityRunner {
     final UnityRunnerConfiguration configuration;
     private volatile boolean stop = false;
     private final LogParser logParser;
+    private Thread runnerThread;
+    private Tailer tailer;
+    private TailerListener listener;
 
     UnityRunner(UnityRunnerConfiguration configuration, LogParser logParser) {
         this.configuration = configuration;
@@ -68,6 +72,11 @@ public class UnityRunner {
             args.add(configuration.executeMethod);
         }
 
+        if(!configuration.buildTarget.equals("")) {
+            args.add("-buildTarget");
+            args.add(configuration.buildTarget);
+        }
+
         if (configuration.useCleanedLog) {
             args.add("-cleanedLogFile");
             args.add(configuration.getCleanedLogPath());
@@ -83,20 +92,13 @@ public class UnityRunner {
      * start the unity runner
      */
     public void start() {
-
         logMessage("[Starting UnityRunner]");
-
-        Thread runnerThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                tailLogFile();
-            }
-        });
-        runnerThread.start();
 
         if (configuration.clearBefore) {
             clearBefore();
         }
+
+        tailLogFile();
     }
 
     /**
@@ -107,20 +109,64 @@ public class UnityRunner {
         logMessage("[tailing log file: " + configuration.getInterestedLogPath() + "]");
 
         File file = new File(configuration.getInterestedLogPath());
-        TailerListener listener = new TailerListener(this);
-        Tailer tailer = Tailer.create(file, listener);
+        listener = new TailerListener(this);
+        tailer = new Tailer(file, listener, 500);
 
-        while (!stop) {
-            // sleep so we don't busy-wait
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        runnerThread = new Thread(tailer);
+        runnerThread.start();
+    }
+
+    /**
+     * cat the log file instead of tailing it
+     */
+    private void catLogFile() {
+        logMessage("[Catting log file]");
+        if (configuration.ignoreLogBefore) {
+            logMessage("[Ignoring lines before text "+configuration.ignoreLogBeforeText +"]");
         }
 
-        tailer.stop();
-        logMessage("[log tail process end]");
+        String interestedLogPath = configuration.getInterestedLogPath();
+
+        logMessage("[InterestedLogPath] " + interestedLogPath);
+
+        File file = new File(interestedLogPath);
+
+        // for each line
+        try {
+            LineIterator iterator = FileUtils.lineIterator(file);
+            List<String> ignoredLines = new ArrayList<String>();
+            boolean stillIgnoringLines = configuration.ignoreLogBefore;
+            try {
+                while (iterator.hasNext()) {
+                    String line = iterator.nextLine();
+                    if (stillIgnoringLines && line.contentEquals(configuration.ignoreLogBeforeText)){
+                        stillIgnoringLines = false;
+                    }
+
+                    if (line.length() > 0) {
+                        if ( stillIgnoringLines ) {
+                            // add the message to the ignored group
+                            ignoredLines.add(line);
+                        } else {
+                            // log the message
+                            logMessage(line);
+                        }
+                    }
+                }
+                if (stillIgnoringLines) {
+                    // we have finished processing the log and we've ignored everything
+                    logMessage("[The configured text has not been found: "+configuration.ignoreLogBeforeText +"]");
+                    // we better output all these lines
+                    logMessages(ignoredLines);
+                }
+            } finally {
+                iterator.close();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -134,7 +180,12 @@ public class UnityRunner {
      * stop the runner
      */
     public void stop() {
-        stop = true;
+//        catLogFile();
+
+        tailer.stop();
+
+        logMessage("[log tail process end]");
+
         logMessage("[Stop UnityRunner]");
 
     }

@@ -38,6 +38,7 @@ public class UnityRunnerConfiguration {
     final String projectPath;
     final String executeMethod;
     final String buildPlayer;
+    final String buildTarget;
     final String buildPath;
     final String extraOpts;
     final String unityVersion;
@@ -51,7 +52,7 @@ public class UnityRunnerConfiguration {
 
     final public static String MacPlistRelativePath = "Unity.app/Contents/Info.plist";
     final public static String MacUnityExecutableRelativePath = "Unity.app/Contents/MacOS/Unity";
-    final public static String WindowsUnityExecutableRelativePath = "Editor\\unity.exe";
+    final public static String WindowsUnityExecutableRelativePath = "Editor\\Unity.exe";
 
     final static String windowsLogPath = System.getenv("LOCALAPPDATA") + "\\Unity\\Editor\\Editor.log";
     final static String macLogPath = System.getProperty("user.home") + "/Library/Logs/Unity/Editor.log";
@@ -70,8 +71,7 @@ public class UnityRunnerConfiguration {
         quit = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_QUIT);
         batchMode = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_BATCH_MODE);
         noGraphics = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_NO_GRAPHICS);
-        projectPath = FilenameUtils.separatorsToSystem(
-                Parameters.getString(runnerParameters, PluginConstants.PROPERTY_PROJECT_PATH));
+        projectPath = FilenameUtils.separatorsToSystem(Parameters.getString(runnerParameters, PluginConstants.PROPERTY_PROJECT_PATH));
 
         // executable path CAN be overridden
         unityExecutablePath = FilenameUtils.separatorsToSystem(
@@ -93,6 +93,7 @@ public class UnityRunnerConfiguration {
         lineListPath = FilenameUtils.separatorsToSystem(Parameters.getString(runnerParameters, PluginConstants.PROPERTY_LINELIST_PATH));
         executeMethod = Parameters.getString(runnerParameters, PluginConstants.PROPERTY_EXECUTE_METHOD);
         buildPlayer = Parameters.getString(runnerParameters, PluginConstants.PROPERTY_BUILD_PLAYER);
+        buildTarget = Parameters.getString(runnerParameters, PluginConstants.PROPERTY_BUILD_TARGET);
         buildPath = FilenameUtils.separatorsToSystem(
                 Parameters.getString(runnerParameters, PluginConstants.PROPERTY_BUILD_PATH));
         extraOpts = Parameters.getString(runnerParameters, PluginConstants.PROPERTY_BUILD_EXTRA);
@@ -105,6 +106,7 @@ public class UnityRunnerConfiguration {
         cleanedLogPath = new java.io.File(
                 agentRunningBuild.getBuildTempDirectory(),
                 String.format("cleaned-%d.log", agentRunningBuild.getBuildId()) );
+
         useCleanedLog = true;
 
         ignoreLogBefore = Parameters.getBoolean(runnerParameters, PluginConstants.PROPERTY_LOG_IGNORE);
@@ -186,7 +188,7 @@ public class UnityRunnerConfiguration {
      * @param locations list of locations
      */
     private static void addLocation(String location, List<String> locations) {
-        if (isSet(location) && !locations.contains(location)) {
+        if (isSet(location)) {
             locations.add(location);
         }
     }
@@ -201,24 +203,17 @@ public class UnityRunnerConfiguration {
 
         switch (platform) {
             case Windows:
-                //On Windows we have potentially two locations for 32 and 64 bit apps.
-                //But because we can have 32 or 64 bit Java on 32 or 64 bit Windows
-                //we need to check three environment variables.
-                //See: http://stackoverflow.com/a/27720921
+                // on Windows we have potentially two locations for 32 and 64 bit apps
+                addLocation(System.getenv("ProgramFiles"), locations);
+                addLocation(System.getenv("ProgramFiles(x86)"), locations);
 
-                String x64Location = System.getenv("ProgramFiles");
-                String x86Location = System.getenv("ProgramFiles(X86)");
-                String x64onx86 = System.getenv("ProgramW6432");
-
-                addLocation(x64Location, locations);
-                addLocation(x86Location, locations);
-                addLocation(x64onx86, locations);
-                break;
-
+                // When running a 32 bit instance of a JVM under a 64 bit version of windows, from
+                // windows 10. We should also use the following environment variable, the previous two
+                // will all resolve to the same location. Either losing Program Files or Program Files (x86)
+                addLocation(System.getenv("ProgramW6432"), locations);
             case Mac:
                 // on Mac there is only one location for apps.
                 addLocation("/Applications", locations);
-                break;
         }
 
         return locations;

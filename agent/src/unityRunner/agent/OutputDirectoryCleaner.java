@@ -24,6 +24,7 @@ public class OutputDirectoryCleaner extends DirectoryWalker {
     public List clean(File startDirectory) {
 
         logger.logActivityStart("Cleanup");
+        logger.logCompilationFailure();
         logger.log("Cleaning .meta and .svn files after build...");
 
         List results = new ArrayList();
